@@ -28,9 +28,7 @@ data class HealthData(
     val steps: String = "3107"
 )
 
-class HealthViewModel : ViewModel() {
-    var data by mutableStateOf(HealthData())
-}
+
 
 class MainActivity : ComponentActivity() {
 
@@ -91,6 +89,18 @@ fun AppNavigation() {
         composable("detail") {
             DetailScreen(navController, vm)
         }
+
+        composable("location") {
+            LocationScreen(navController)
+        }
+
+        composable("api") {
+            ApiScreen(navController)
+        }
+
+        composable("cloud") {
+            FirestoreScreen(navController)
+        }
     }
 }
 
@@ -141,12 +151,13 @@ fun MainScreen(
                     onClick = {
 
                         if (inputSteps.isNotEmpty()) {
-                            vm.data = vm.data.copy(
-                                steps = inputSteps
+
+                            vm.saveSteps(
+                                inputSteps
                             )
                         }
                     }
-                ) {
+                ){
                     Text("Update Steps")
                 }
             }
@@ -196,6 +207,48 @@ fun MainScreen(
                     navController.navigate("detail")
                 }) {
                     Text("Detail")
+                }
+            }
+        }
+
+        item {
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, start = 16.dp, end = 16.dp),
+
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+
+                Button(onClick = {
+                    navController.navigate("location")
+                }) {
+                    Text("Location")
+                }
+
+                Button(onClick = {
+                    navController.navigate("api")
+                }) {
+                    Text("API")
+                }
+            }
+        }
+
+        item {
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, start = 16.dp, end = 16.dp),
+
+                horizontalArrangement = Arrangement.Center
+            ) {
+
+                Button(onClick = {
+                    navController.navigate("cloud")
+                }) {
+                    Text("Cloud")
                 }
             }
         }
@@ -422,12 +475,13 @@ fun InputScreen(
             onClick = {
 
                 if (inputSteps.isNotEmpty()) {
-                    vm.data = vm.data.copy(
-                        steps = inputSteps
+
+                    vm.saveSteps(
+                        inputSteps
                     )
                 }
             }
-        ) {
+        ){
             Text("Save")
         }
 
